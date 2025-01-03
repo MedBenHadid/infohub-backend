@@ -34,7 +34,7 @@ class InfoController extends Controller
             'category_id' => 'required',
             'keywords' => 'nullable|string',
             'file_name' => 'required|string',
-            'file' => 'required|file|mimes:pdf,doc,docx,xlsx,xls',
+            'file' => 'required|file|mimes:pdf,doc,docx',
         ]);
 
 
