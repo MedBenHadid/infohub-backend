@@ -24,7 +24,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('updateCategory/{id}', [InfoController::class, 'updateCategory']);
     // Route::get('current-user', [AuthController::class, 'currentUser']);
 
-    Route::get('/run-migrations', [MigrationController::class, 'migrateAndSeed']);
 
     Route::get('/infos', [InfoController::class, 'index']);
     Route::post('/infos/filter', [InfoController::class, 'filter']);
@@ -42,5 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/deleteCategory/{id}', [InfoController::class, 'deleteCategory']);
     // });
 });
+Route::get('/run-migrations', [MigrationController::class, 'migrateAndSeed']);
 
 Route::post('/auth/signIn', [AuthController::class, 'signIn']);
