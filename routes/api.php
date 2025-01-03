@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\MigrationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('updateCategory/{id}', [InfoController::class, 'updateCategory']);
     // Route::get('current-user', [AuthController::class, 'currentUser']);
 
+    Route::get('/run-migrations', [MigrationController::class, 'migrateAndSeed']);
 
     Route::get('/infos', [InfoController::class, 'index']);
     Route::post('/infos/filter', [InfoController::class, 'filter']);
