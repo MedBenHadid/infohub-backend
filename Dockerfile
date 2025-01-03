@@ -38,5 +38,5 @@ EXPOSE 8000
 # Set the command to run Laravel's built-in server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
 
-RUN php artisan migrate:fresh
-RUN php artisan db:seed
+# RUN php artisan migrate:fresh
+# RUN php artisan db:seed
