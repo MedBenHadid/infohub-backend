@@ -1,7 +1,7 @@
-# Use the official PHP image with FPM
+# Use the official PHP image with FPM and required extensions
 FROM php:8.2-fpm
 
-# Set the working directory
+# Set working directory
 WORKDIR /var/www
 
 # Install system dependencies
@@ -22,29 +22,18 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy application files
+# Copy application code
 COPY . .
 
-# Ensure correct permissions for storage and cache
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
-    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
-
-# Run Composer install for dependencies
+# Install Laravel dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# Generate application key (if not set)
-RUN php artisan key:generate --force
-
-# Clear and cache configuration
-RUN php artisan config:clear \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+# Ensure the necessary directories have the correct permissions
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
 # Expose port 8000
 EXPOSE 8000
 
-# Start Laravel server
+# Set the command to run Laravel's built-in server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
-
-
