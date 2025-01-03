@@ -43,7 +43,7 @@ class Info extends Model
         $element->file_name = $request->file_name;
         $element->file_type = $file_type;
         $element->file_size = $file_size;
-        $path = $file->store('public/files');
+        $path = $file->store('public/file');
         $element->file_path = Storage::url($path);
         $element->save();
 
