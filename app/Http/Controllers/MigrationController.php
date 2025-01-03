@@ -9,7 +9,6 @@ class MigrationController extends Controller
 {
     public function migrateAndSeed()
     {
-        return env('DB_HOST');
         try {
             // Run migrations
             Artisan::call('migrate', ['--force' => true]);
