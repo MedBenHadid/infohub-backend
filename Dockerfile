@@ -1,35 +1,39 @@
-# Use the official PHP image with necessary extensions
-FROM php:8.1-fpm
+# Use the official PHP image with FPM and required extensions
+FROM php:8.2-fpm
+
+# Set working directory
+WORKDIR /var/www
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    unzip \
+    zip \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    zip \
-    unzip \
-    git \
-    curl
-
-# Install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install pdo_mysql gd
-
-# Set the working directory
-WORKDIR /var/www
-
-# Copy application files
-COPY . .
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Copy application code
+COPY . .
+
+# Install Laravel dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www
+# Ensure the necessary directories have the correct permissions
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
-# Expose port
+# Expose port 8000
 EXPOSE 8000
 
-# Start Laravel server
+# Set the command to run Laravel's built-in server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
