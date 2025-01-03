@@ -36,4 +36,4 @@ RUN chown -R www-data:www-data /var/www \
 EXPOSE 8000
 
 # Set the command to run Laravel's built-in server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0:8000", "--port=8000"]
